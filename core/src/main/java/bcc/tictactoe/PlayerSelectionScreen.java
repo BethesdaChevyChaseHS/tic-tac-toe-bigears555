@@ -22,49 +22,70 @@ public class PlayerSelectionScreen extends ScreenAdapter{
     private Skin skin;
 
     public PlayerSelectionScreen(TicTacToe game, int curPlayer) {//checkpoint 1
-       //load skin
-
-       //add title saying something like "select player"
-
+        this.game = game;
+        stage = new Stage();
+        //load skin
+        skin = new Skin(Gdx.files.internal("skins/glassy/glassy-ui.json"));
+        
+        Gdx.input.setInputProcessor(stage);
+        //add title saying something like "select player"
        //if you would like a background color behind the title, you can use the helper method in the Constants file
-
        //check out the documentation linked in the readme / on canvas
+       Container<Label> titleLabel = Constants.createLabelWithBackgrounColor("select player", Color.TEAL, skin);
 
        //add buttons to select from the player types listed in constants.java. If there isSimulated is true, don't let human be an option. 
-    
-       //curplayer will either be 0 or 1
+      
+       Table MyTable = new Table();
+        MyTable.setFillParent(true);
+        MyTable.center();
+        MyTable.add(titleLabel).pad(10).row();
 
-       this.game = game;
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-        skin = new Skin(Gdx.files.internal("skins/glassy/glassy-ui.json"));
-
-        Container<Label> selectLabel = Constants.createLabelWithBackgrounColor("Select Player " + currentPlayer, Color.BLACK, skin);
-        Table table = new Table();
-        table.add(selectLabel).pad(5).row();
-
-        if (!game.getIsSimulated()) {
-            addButton(table, "Human", "human", currentPlayer);
-        }
-
-        addButton(table, "random AI", "random", currentPlayer);
-        addButton(table, "smart AI", "smart", currentPlayer);
-        addButton(table, "smarter AI", "genius", currentPlayer);
-
-        table.setFillParent(true);
-        table.center();
-        stage.addActor(table);
-    }
-
-    private void addButton(Table table, String buttonText, String playerType, int currentPlayer) {
-        TextButton button = new TextButton(buttonText, skin);
-        table.add(button).pad(5).row();
-        button.addListener(new ClickListener() {
+       if(game.getIsSimulated() == false) {
+        TextButton humanButton = new TextButton("Human", skin);
+        humanButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setPlayer(currentPlayer, playerType);
+                Player newPlayer = new Human();
+                game.setPlayer(curPlayer, newPlayer);
             }
         });
+        MyTable.add(humanButton).pad(8).row();
+       } 
+
+       TextButton randomAIButton = new TextButton("Random AI", skin);
+       randomAIButton.addListener(new ClickListener() {
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            Player newPlayer = new RandomAI();
+            game.setPlayer(curPlayer, newPlayer);
+        }
+    });
+    
+       TextButton slightlySmartAIButton = new TextButton("Slightly Smart AI", skin);
+       slightlySmartAIButton.addListener(new ClickListener() {
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            Player newPlayer = new SlightlySmartAI();
+            game.setPlayer(curPlayer, newPlayer);
+        }
+    });
+       TextButton smartAIButton = new TextButton("Smart AI", skin);
+       smartAIButton.addListener(new ClickListener() {
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            Player newPlayer = new SmartAI();
+                game.setPlayer(curPlayer, newPlayer);
+        }
+    });
+        
+    
+        MyTable.add(randomAIButton).pad(8).row();
+        MyTable.add(slightlySmartAIButton).pad(8).row();
+        MyTable.add(smartAIButton).pad(8).row();
+
+        stage.addActor(MyTable);
+      
+       //curplayer will either be 0 or 1
     }
 
     @Override

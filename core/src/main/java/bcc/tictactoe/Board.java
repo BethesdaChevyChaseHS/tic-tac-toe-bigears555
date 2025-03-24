@@ -10,40 +10,42 @@ public class Board {
 
     public void reset() {
         //should restart the game - set all cells to empty
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                grid[row][col] = Mark.EMPTY;
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                grid[i][j] = Mark.EMPTY;
             }
         }
+
     }
 
     public boolean makeMove(Move move, Mark mark) {//make move on the grid
-        return makeMove(move.getRow(), move.getCol(), mark);
+        
+        return makeMove(move.row, move.col, mark) ;
     }
 
     public boolean makeMove(int row, int col, Mark mark) {
         //make a move on the grid
-        if (grid[row][col] == Mark.EMPTY) {
+        if(grid[row][col] == Mark.EMPTY) {
             grid[row][col] = mark;
             return true;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     public void clearCell(int row, int col) {
-       //set the given grid cell to empty
        grid[row][col] = Mark.EMPTY;
     }
     public boolean isFull() {
-       // Check if grid is full (and thus game is a tie)
-       for (int row = 0; row < 3; row++) {
-        for (int col = 0; col < 3; col++) {
-            if (grid[row][col] == Mark.EMPTY) {
+        for(int row = 0; row < grid.length; row++) {
+            for(int col = 0; col < grid[0].length; col++) {
+            if(grid[row][col] == Mark.EMPTY) {
                 return false;
             }
-        }
-    }
-        return true;
+            }
+           }
+           return true;
     }
 
     public Mark[][] getGrid() {
@@ -55,40 +57,83 @@ public class Board {
      */
     public Mark checkWin() {//return null if game not over
         // Check rows
-        for (int row = 0; row < 3; row++) {
-            if (grid[row][0] != Mark.EMPTY && grid[row][0] == grid[row][1] && grid[row][1] == grid[row][2]) {
-                return grid[row][0];
-            }
+
+        // X's Rows
+        if(grid[0][0] == Mark.X && grid[0][1] == Mark.X && grid[0][2] == Mark.X) {
+            return Mark.X;
         }
-        // Check columns
-        for (int col = 0; col < 3; col++) {
-            if (grid[0][col] != Mark.EMPTY && grid[0][col] == grid[1][col] && grid[1][col] == grid[2][col]) {
-                return grid[0][col];
-            }
+        else if(grid[1][0] == Mark.X && grid[1][1] == Mark.X && grid[1][2] == Mark.X) {
+            return Mark.X;
         }
-        // Check diagonals
-        if (grid[0][0] != Mark.EMPTY && grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2]) {
-            return grid[0][0];
-        }
-        if (grid[0][2] != Mark.EMPTY && grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0]) {
-            return grid[0][2];
-        }
-        // Check tie
-        if (isFull()) {
-            return Mark.TIE;
+        else if(grid[2][0] == Mark.X && grid[2][1] == Mark.X && grid[2][2] == Mark.X) {
+            return Mark.X;
         }
 
-        return null; // Game not over
+        // O's rows
+        else if(grid[0][0] == Mark.O && grid[0][1] == Mark.O && grid[0][2] == Mark.O) {
+            return Mark.O;
+        }
+        else if(grid[1][0] == Mark.O && grid[1][1] == Mark.O && grid[1][2] == Mark.O) {
+            return Mark.O;
+        }
+        else if(grid[2][0] == Mark.O && grid[2][1] == Mark.O && grid[2][2] == Mark.O) {
+            return Mark.O;
+        }
+       
+        // Check columns
+
+         // X's Columns
+        else if(grid[0][0] == Mark.X && grid[1][0] == Mark.X && grid[2][0] == Mark.X) {
+            return Mark.X;
+        }
+        else if(grid[0][1] == Mark.X && grid[1][1] == Mark.X && grid[2][1] == Mark.X) {
+            return Mark.X;
+        }
+        else if(grid[0][2] == Mark.X && grid[1][2] == Mark.X && grid[2][2] == Mark.X) {
+            return Mark.X;
+        }
+
+        // O's Columns
+        else if(grid[0][0] == Mark.O && grid[1][0] == Mark.O && grid[2][0] == Mark.O) {
+            return Mark.O;
+        }
+        else if(grid[0][1] == Mark.O && grid[1][1] == Mark.O && grid[2][1] == Mark.O) {
+            return Mark.O;
+        }
+        else if(grid[0][2] == Mark.O && grid[1][2] == Mark.O && grid[2][2] == Mark.O) {
+            return Mark.O;
+        }
+       
+
+       
+        // Check diagonals
+        else if(grid[0][0] == Mark.X && grid[1][1] == Mark.X && grid[2][2] == Mark.X) {
+            return Mark.X;
+        }
+
+        else if(grid[0][0] == Mark.O && grid[1][1] == Mark.O && grid[2][2] == Mark.O) {
+            return Mark.O;
+        }
+
+        else if(grid[2][0] == Mark.X && grid[1][1] == Mark.X && grid[0][2] == Mark.X) {
+            return Mark.X;
+        }
+
+        else if(grid[2][0] == Mark.O && grid[1][1] == Mark.O && grid[0][2] == Mark.O) {
+            return Mark.O;
+        }
+
+        else if(isFull() == true) {
+            return Mark.TIE;
+        }
+        // Check tie
+        else {
+            return null;
+        }
+     // Game not over
     }
 
     public Board clone() {
-        // Return a copy of the grid
-        Board newBoard = new Board();
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                newBoard.grid[row][col] = this.grid[row][col];
-            }
-        }
-        return newBoard;
+       return null;
     }
 }
